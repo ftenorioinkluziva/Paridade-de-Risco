@@ -417,6 +417,12 @@ def gerar_alertas(sgs_data, focus_data):
     # IGP-M > IPCA (contagio inflacionario)
     igp_df = sgs_data.get("IGP-M mensal (%)")
     ipca_m = sgs_data.get("IPCA mensal (%)")
+    if igp_df is not None and not igp_df.empty:
+        v_igp = igp_df.iloc[-1, 0]
+        if v_igp > 1.0:
+            alertas.append((chr(0x1F534),
+                f"IGP-M mensal em {v_igp:.2f}% (>1%): forte pressao inflacionaria no atacado — contagio para o varejo nos proximos meses",
+                "IGP-M mensal alto"))
     if igp_df is not None and ipca_m is not None and not igp_df.empty and not ipca_m.empty:
         v_igp, v_ipca = igp_df.iloc[-1, 0], ipca_m.iloc[-1, 0]
         if v_igp > v_ipca * 1.5:
