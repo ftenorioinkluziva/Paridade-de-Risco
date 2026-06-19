@@ -1,0 +1,248 @@
+{
+  "main": {
+    "id": "666ddc70787b8bce",
+    "type": "split",
+    "children": [
+      {
+        "id": "92fffe9d9a057e0c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c4bfcc3ebe164729",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "01 - Notas Geradas/Táticas de Aporte e Distribuição.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Táticas de Aporte e Distribuição"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "4d095cbee337ed33",
+    "type": "split",
+    "children": [
+      {
+        "id": "0c202984d5cc51e0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ea73a46149011751",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de arquivos"
+            }
+          },
+          {
+            "id": "251696b2f0c16a9b",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "84afa266604605e5",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 524.5
+  },
+  "right": {
+    "id": "0e1233820ee8e593",
+    "type": "split",
+    "children": [
+      {
+        "id": "a2a6f70c31cfe3a2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "13986021a8f3f47a",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "02 - Conhecimentos/Carteira risco equilibrado no mercado brasileiro.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos para Carteira risco equilibrado no mercado brasileiro"
+            }
+          },
+          {
+            "id": "7631e8dbf34f3348",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "02 - Conhecimentos/Carteira risco equilibrado no mercado brasileiro.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links de saída para Carteira risco equilibrado no mercado brasileiro"
+            }
+          },
+          {
+            "id": "6855aa16ae4253da",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "71ad0ee5dadde46f",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas as propriedades"
+            }
+          },
+          {
+            "id": "214651772960cad8",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "02 - Conhecimentos/Carteira risco equilibrado no mercado brasileiro.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Sumário de Carteira risco equilibrado no mercado brasileiro"
+            }
+          },
+          {
+            "id": "0c8462de8c7dbb24",
+            "type": "leaf",
+            "state": {
+              "type": "file-properties",
+              "state": {
+                "file": "02 - Conhecimentos/Carteira risco equilibrado no mercado brasileiro.md"
+              },
+              "icon": "lucide-info",
+              "title": "Propriedades do arquivo Carteira risco equilibrado no mercado brasileiro"
+            }
+          },
+          {
+            "id": "4e853f97ebfd7520",
+            "type": "leaf",
+            "state": {
+              "type": "claudian-view",
+              "state": {},
+              "icon": "bot",
+              "title": "Claudian"
+            }
+          }
+        ],
+        "currentTab": 6
+      }
+    ],
+    "direction": "horizontal",
+    "width": 927.5
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Criar nova base": false,
+      "realclaudian:Open Claudian": false
+    }
+  },
+  "active": "c4bfcc3ebe164729",
+  "lastOpenFiles": [
+    "01 - Notas Geradas/Acompanhamento Junho 2026.md",
+    "01 - Notas Geradas/Táticas de Aporte e Distribuição.md",
+    "01 - Notas Geradas/Rebalanceamento Maio 2026.md",
+    "99 - PDFs/Focus_12062026.pdf",
+    "02 - Conhecimentos/Carteira risco equilibrado no mercado brasileiro.md",
+    "99 - PDFs/R20260508.pdf",
+    "01 - Notas Geradas",
+    "02 - Conhecimentos/Carteira de paridade de risco no Brasil 2.md",
+    "02 - Conhecimentos/Carteira de paridade de risco no Brasil.md",
+    "99 - PDFs/Política Monetária no Brasil_ Conceitos e Mecanismos.pdf",
+    "99 - PDFs/O Objetivo do Investidor_ Capturando o Prêmio de Risco.pdf",
+    "99 - PDFs/Montando uma Carteira de Paridade de Risco no Brasil.pdf",
+    "99 - PDFs/M1 - Aula 3 - As 3 fontes de Retorno.mp3.pdf",
+    "99 - PDFs/M1 - Aula 1 - Aula 2 - As 8 Classes de Ativos_audio.pdf",
+    "99 - PDFs/Fundamentos da Alocação por Paridade de Risco.pdf",
+    "99 - PDFs/Cálculo de Pesos para Carteira Paridade de Risco Brasil.pdf",
+    "04 - Fontes/Política Monetária no Brasil_ Conceitos e Mecanismos.md",
+    "04 - Fontes/Paridade de Risco_ Superando a Pressão Psicológica do Mercado.md",
+    "04 - Fontes/Montando uma Carteira de Paridade de Risco no Brasil.md",
+    "04 - Fontes/O Objetivo do Investidor_ Capturando o Prêmio de Risco.md",
+    "04 - Fontes/M1 - Aula 3 - As 3 fontes de Retorno.mp3.md",
+    "04 - Fontes/M1 - Aula 1 - Aula 2 - As 8 Classes de Ativos_audio.md",
+    "04 - Fontes/Fundamentos da Alocação por Paridade de Risco.md",
+    "04 - Fontes/Desafios Emocionais do Investimento em Paridade de Risco.md",
+    "04 - Fontes/Cálculo de Pesos para Carteira Paridade de Risco Brasil.md",
+    "04 - Fontes/Construindo a Carteira de Paridade de Risco no Brasil.md",
+    "04 - Fontes/Como Montar sua Carteira de Investimentos no Brasil com ETFs.md",
+    "04 - Fontes/Como Ativos Brasileiros Performam em Diferentes Cenários Econômicos.md",
+    "04 - Fontes/Carteira de Paridade de Risco no Brasil_ Análise Detalhada.md",
+    "04 - Fontes/Aula 8 - Resumo da Política Monetária (definição de juros) no Brasil.md",
+    "04 - Fontes/Aula 7 - 4º Diferença entre Economia EUA x Brasil (Sincronismo de Políticas)_audio.mp3.md",
+    "04 - Fontes/Aula 6 - 3º Diferença entre Economia Eua x Brasil (Fiscal e Juros Longos) Parte 2_audio.mp3.md",
+    "04 - Fontes/Aula 5 - 3º Diferença entre Economia EUA x Brasil (Fiscal e Juros Longos) Parte 1_audio.mp3.md",
+    "04 - Fontes/Aula 4 - 2º Diferença entre Economia EUA x Brasil (Função Reação) Parte 2_audio.mp3.md",
+    "04 - Fontes/Aula 3 - Por que Ações vão bem no Cenário 1 no Brasil.md",
+    "04 - Fontes/Aula 3 - 2º Diferença entre Economia EUA x Brasil (Mandato BCB) Parte 1_audio.mp3.md"
+  ]
+}
