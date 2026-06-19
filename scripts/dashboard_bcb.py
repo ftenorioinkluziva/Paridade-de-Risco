@@ -58,8 +58,8 @@ def grafico_selic_ipca():
     """Grafico 1: Selic + IPCA 12m - juro real."""
     print("  [1/6] Selic + IPCA 12m...", file=sys.stderr)
     
-    selic = sgs.get(432, start="2023-01-01", timeout=60)
-    ipca = sgs.get(13522, start="2023-01-01", timeout=60)
+    selic = sgs.get(432, start="2024-06-01", timeout=90)
+    ipca = sgs.get(13522, start="2024-06-01", timeout=90)
     
     fig, ax1 = plt.subplots(figsize=(10, 4.5))
     fig.patch.set_facecolor(COR_FUNDO)
@@ -99,7 +99,7 @@ def grafico_ipca_mensal():
     """Grafico 2: IPCA mensal com limiares."""
     print("  [2/6] IPCA mensal...", file=sys.stderr)
     
-    ipca = sgs.get(433, start="2024-01-01", timeout=60)
+    ipca = sgs.get(433, start="2024-06-01", timeout=90)
     
     fig, ax = plt.subplots(figsize=(10, 4))
     fig.patch.set_facecolor(COR_FUNDO)
@@ -135,7 +135,7 @@ def grafico_ibcbr():
     """Grafico 3: IBC-Br atividade economica."""
     print("  [3/6] IBC-Br...", file=sys.stderr)
     
-    ibc = sgs.get(24363, start="2023-01-01", timeout=60)
+    ibc = sgs.get(24363, start="2024-06-01", timeout=90)
     
     fig, ax = plt.subplots(figsize=(10, 4))
     fig.patch.set_facecolor(COR_FUNDO)
@@ -167,7 +167,7 @@ def grafico_dolar():
     """Grafico 4: Dolar Ptax."""
     print("  [4/6] Dolar...", file=sys.stderr)
     
-    usd = sgs.get(3698, start="2024-01-01", timeout=60)
+    usd = sgs.get(3698, start="2024-06-01", timeout=90)
     
     fig, ax = plt.subplots(figsize=(10, 4))
     fig.patch.set_facecolor(COR_FUNDO)
@@ -189,7 +189,7 @@ def grafico_igpm():
     """Grafico 5: IGP-M mensal."""
     print("  [5/6] IGP-M mensal...", file=sys.stderr)
     
-    igp = sgs.get(189, start="2024-01-01", timeout=60)
+    igp = sgs.get(189, start="2024-06-01", timeout=90)
     
     fig, ax = plt.subplots(figsize=(10, 4))
     fig.patch.set_facecolor(COR_FUNDO)
@@ -218,53 +218,137 @@ def grafico_igpm():
     return path
 
 
-def grafico_mapa_calor():
-    """Grafico 6: Mapa de calor da carteira por ativo x cenario."""
-    print("  [6/6] Mapa de calor...", file=sys.stderr)
-    
+def grafico_estrutura_carteira():
+    """Grafico 6: Estrutura da carteira - alocacao por ativo + risco por cenario."""
+    print("  [6/6] Estrutura da carteira...", file=sys.stderr)
+
     # Dados da carteira (da nota Acompanhamento Junho 2026)
-    ativos = ["IFRM11", "XFIX11", "B5P211", "CDI", "IB5M11", "Dolar", "BOVA11"]
-    cenarios = ["C1\nCresc+Desinf", "C2\nCresc+Infl", "C3\nEstagflacao", "C4\nRecessao"]
-    
-    # Contribuicao de cada ativo em cada cenario (0=nenhuma, 1=parcial, 2=forte)
-    exposicao = np.array([
-        [0, 0, 0, 2],  # IFRM11 -> C4
-        [2, 0, 0, 0],  # XFIX11 -> C1
-        [1, 2, 2, 0],  # B5P211 -> C1+C2+C3
-        [0, 2, 0, 0],  # CDI -> C2
-        [2, 0, 0, 0],  # IB5M11 -> C1
-        [0, 0, 2, 0],  # Dolar -> C3
-        [2, 0, 0, 0],  # BOVA11 -> C1
-    ])
-    
-    pesos = [37.5, 14.0, 18.75, 12.5, 7.0, 6.25, 4.0]
-    
-    fig, ax = plt.subplots(figsize=(8, 5))
+    ativos = [
+        ("IFRM11", 37.50, "C4"),
+        ("B5P211", 18.75, "C2+C3"),
+        ("XFIX11", 14.00, "C1"),
+        ("CDI", 12.50, "C2"),
+        ("IB5M11", 7.00, "C1"),
+        ("Dolar", 6.25, "C3"),
+        ("BOVA11", 4.00, "C1"),
+    ]
+
+    cores_ativo = {
+        "C1": "#00d4ff",   # azul
+        "C2": "#ffaa33",   # amarelo/laranja
+        "C3": "#ff4466",   # vermelho
+        "C4": "#aa66ff",   # roxo
+        "C2+C3": "#ff8844",# laranja-queimado
+    }
+
+    fig = plt.figure(figsize=(12, 5.5))
     fig.patch.set_facecolor(COR_FUNDO)
-    
-    im = ax.imshow(exposicao, cmap="RdYlGn", aspect="auto", vmin=0, vmax=2)
-    
-    ax.set_xticks(range(len(cenarios)))
-    ax.set_xticklabels(cenarios, fontsize=9, color=COR_TEXTO)
-    ax.set_yticks(range(len(ativos)))
-    ax.set_yticklabels([f"{a} ({p:.0f}%)" for a, p in zip(ativos, pesos)],
-                       fontsize=9, color=COR_TEXTO)
-    
-    # Valores nas celulas
-    for i in range(len(ativos)):
-        for j in range(len(cenarios)):
-            v = exposicao[i, j]
-            cor = "black" if v == 2 else "white"
-            label = {0: "", 1: "~", 2: "●"}.get(v, "")
-            ax.text(j, i, label, ha="center", va="center", fontsize=14, color=cor, fontweight="bold")
-    
-    ax.set_title("Exposicao por Ativo x Cenario", color=COR_TEXTO,
-                 fontsize=13, fontweight="bold", pad=12)
-    ax.spines[:].set_visible(False)
-    
-    fig.tight_layout()
-    
-    path = os.path.join(VAULT_PATH, "graf_mapa_calor.png")
+
+    # ========================
+    # Painel 1: Donut de alocacao
+    # ========================
+    ax1 = fig.add_subplot(121)
+    ax1.set_facecolor(COR_FUNDO)
+
+    labels = [f"{a}\n{p:.1f}%" for a, p, _ in ativos]
+    sizes = [p for _, p, _ in ativos]
+    cores = [cores_ativo[c] for _, _, c in ativos]
+    explode = [0.03] * len(ativos)
+    # Destacar IFRM11 e B5P211 (maiores pesos)
+    explode[0] = 0.08
+    explode[1] = 0.05
+
+    wedges, texts, autotexts = ax1.pie(
+        sizes, explode=explode, labels=labels, colors=cores,
+        autopct="", pctdistance=0.75,
+        startangle=90, textprops={"color": COR_TEXTO, "fontsize": 8},
+        wedgeprops={"linewidth": 0.5, "edgecolor": COR_FUNDO},
+    )
+
+    ax1.set_title("Alocacao por Ativo", color=COR_TEXTO,
+                  fontsize=12, fontweight="bold", pad=15)
+
+    # Legenda com cenários
+    legenda_cores = {
+        "C1 - Cresc+Desinf": cores_ativo["C1"],
+        "C2 - Cresc+Infl": cores_ativo["C2"],
+        "C3 - Estagflacao": cores_ativo["C3"],
+        "C4 - Recessao": cores_ativo["C4"],
+        "C2+C3 (B5P211)": cores_ativo["C2+C3"],
+    }
+    patches = [plt.Rectangle((0, 0), 1, 1, facecolor=c, edgecolor="none")
+               for c in legenda_cores.values()]
+    ax1.legend(patches, legenda_cores.keys(), loc="lower left",
+               fontsize=7, facecolor=COR_FUNDO, edgecolor=COR_CINZA,
+               framealpha=0.8, bbox_to_anchor=(0, -0.15))
+
+    # ========================
+    # Painel 2: Risco por cenario
+    # ========================
+    ax2 = fig.add_subplot(122)
+    ax2.set_facecolor(COR_FUNDO)
+
+    cenarios = ["C1\nAcoes/FIIs\nIPCA+", "C2\nCDI/B5P211", "C3\nDolar\nB5P211", "C4\nIFRM11\nPrefixado"]
+    capital = [25.00, 25.00, 12.50, 37.50]
+    vols = [9, 0, 18, 6]
+    risco = [c * v / 100 for c, v in zip(capital, vols)]  # contribuicao de risco
+    risco_pct = [r / sum(risco) * 100 if r > 0 else 0 for r in risco]
+    cores_cenario = ["#00d4ff", "#ffaa33", "#ff4466", "#aa66ff"]
+
+    # Barras de capital
+    barras_capital = ax2.bar(
+        np.arange(len(cenarios)) - 0.2, capital, width=0.35,
+        color=[c + "55" for c in cores_cenario], edgecolor=cores_cenario,
+        linewidth=1.5, alpha=0.7, label="Capital (%)"
+    )
+
+    # Barras de contribuicao de risco
+    barras_risco = ax2.bar(
+        np.arange(len(cenarios)) + 0.2, risco_pct, width=0.35,
+        color=cores_cenario, edgecolor="white",
+        linewidth=0.5, alpha=0.9, label="Risco (%)"
+    )
+
+    # Anotacoes
+    for i in range(len(cenarios)):
+        # Capital
+        ax2.text(i - 0.2, capital[i] + 1, f"{capital[i]:.1f}%",
+                 ha="center", fontsize=8, color=COR_TEXTO, fontweight="bold")
+        # Risco
+        if risco_pct[i] > 0:
+            ax2.text(i + 0.2, risco_pct[i] + 1, f"{risco_pct[i]:.0f}%",
+                     ha="center", fontsize=8, color=cores_cenario[i], fontweight="bold")
+        else:
+            ax2.text(i + 0.2, 1.5, "ancora",
+                     ha="center", fontsize=7, color=COR_CINZA, style="italic")
+
+    # Linha de referencia 33.3%
+    ax2.axhline(y=33.33, color=COR_VERDE, linestyle="--", alpha=0.5, linewidth=1)
+    ax2.text(3.3, 33.8, "33,3% (paridade)", color=COR_VERDE, fontsize=7, alpha=0.6)
+
+    ax2.set_xticks(np.arange(len(cenarios)))
+    ax2.set_xticklabels(cenarios, fontsize=8, color=COR_TEXTO)
+    ax2.set_ylabel("%", color=COR_TEXTO, fontsize=10)
+    ax2.set_title("Capital vs Risco por Cenário", color=COR_TEXTO,
+                  fontsize=12, fontweight="bold", pad=15)
+    ax2.legend(fontsize=7, facecolor=COR_FUNDO, edgecolor=COR_CINZA, loc="upper right")
+    ax2.set_ylim(0, 50)
+    ax2.spines["bottom"].set_color(COR_CINZA)
+    ax2.spines["left"].set_color(COR_CINZA)
+    ax2.spines["top"].set_visible(False)
+    ax2.spines["right"].set_visible(False)
+    ax2.grid(axis="y", alpha=0.15, color=COR_CINZA)
+    ax2.tick_params(colors=COR_TEXTO, labelsize=8)
+
+    # Nota explicativa
+    fig.text(0.5, 0.02,
+             "Paridade de risco: C1 = C3 = C4 = 33,3% do risco total. "
+             "C2 tem vol ~0% (ancora de liquidez).",
+             ha="center", fontsize=8, color=COR_CINZA, style="italic")
+
+    fig.tight_layout(rect=[0, 0.05, 1, 1])
+
+    path = os.path.join(VAULT_PATH, "graf_estrutura_carteira.png")
     fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=COR_FUNDO)
     plt.close(fig)
     return path
@@ -311,9 +395,9 @@ def gerar_relatorio_dashboard(caminhos):
     lines.append("")
     lines.append(f"![[graf_igpm.png]]")
     lines.append("")
-    lines.append("## Mapa de Calor da Carteira")
+    lines.append("## Estrutura da Carteira")
     lines.append("")
-    lines.append(f"![[graf_mapa_calor.png]]")
+    lines.append("![[graf_estrutura_carteira.png]]")
     lines.append("")
     lines.append("---")
     lines.append(f"*Gerado em {hoje}*")
@@ -329,20 +413,41 @@ def gerar_relatorio_dashboard(caminhos):
     return path
 
 
+def _safe_graf(func):
+    """Wrapper que captura erros em graficos individuais."""
+    try:
+        return func()
+    except Exception as e:
+        print(f"  [!] Erro em {func.__name__}: {str(e)[:80]}", file=sys.stderr)
+        return None
+
+
 def main():
     print("Gerando dashboard BCB...\n", file=sys.stderr)
     
     os.makedirs(VAULT_PATH, exist_ok=True)
     
-    caminhos = []
-    caminhos.append(grafico_selic_ipca())
-    caminhos.append(grafico_ipca_mensal())
-    caminhos.append(grafico_ibcbr())
-    caminhos.append(grafico_dolar())
-    caminhos.append(grafico_igpm())
-    caminhos.append(grafico_mapa_calor())
+    funcoes = [
+        grafico_selic_ipca,
+        grafico_ipca_mensal,
+        grafico_ibcbr,
+        grafico_dolar,
+        grafico_igpm,
+        grafico_estrutura_carteira,
+    ]
     
-    print("\nGerando relatorio markdown...", file=sys.stderr)
+    caminhos = []
+    for fn in funcoes:
+        p = _safe_graf(fn)
+        if p:
+            caminhos.append(p)
+    
+    if not caminhos:
+        print("[!] Nenhum grafico foi gerado!", file=sys.stderr)
+        return
+    
+    print(f"\n[{len(caminhos)}/{len(funcoes)} graficos gerados]", file=sys.stderr)
+    print("Gerando relatorio markdown...", file=sys.stderr)
     relatorio = gerar_relatorio_dashboard(caminhos)
     
     print(f"\nDashboard salvo: {relatorio}", file=sys.stderr)

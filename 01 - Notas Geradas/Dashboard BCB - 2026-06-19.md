@@ -11,7 +11,7 @@ status: gerado_automaticamente
 
 # Dashboard BCB - 2026-06-19
 
-> Gerado em 19/06/2026 20:21
+> Gerado em 19/06/2026 20:58
 
 ## Selic vs IPCA 12 meses
 
@@ -33,9 +33,9 @@ status: gerado_automaticamente
 
 ![[graf_igpm.png]]
 
-## Mapa de Calor da Carteira
+## Estrutura da Carteira
 
-![[graf_mapa_calor.png]]
+![[graf_estrutura_carteira.png]]
 
 ---
-*Gerado em 19/06/2026 20:21*
+*Gerado em 19/06/2026 20:58*
