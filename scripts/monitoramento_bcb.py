@@ -82,64 +82,81 @@ FOCUS_API_URL = (
     "versao/v1/odata/ExpectativasMercadoAnuais"
 )
 
-INDICADORES_FOCUS = ["IPCA", "Selic", "PIB Total", "Dolar", "IGP-M"]
+INDICADORES_FOCUS = ["IPCA", "Selic", "PIB Total", "Câmbio", "IGP-M"]
 
 
 def fetch_focus(timeout=30):
     """
     Busca expectativas Focus via OData do BCB.
-    Usa urlencode para montar a query corretamente.
+    Usa %24 no lugar de $ para compatibilidade com urlencode.
     Retorna dicionario {Indicador: {ano: mediana}}.
     """
-    from urllib.parse import urlencode
+    from urllib.parse import urlencode, quote
+    from collections import defaultdict
+
+    # Usa DataReferencia (string ano) e filtra anos 2025-2030
+    # Ordena por Data descendente para pegar o Focus mais recente
+    params = {
+        "%24format": "json",
+        "%24top": 500,
+        "%24filter": (
+            "Indicador eq 'IPCA' or Indicador eq 'Selic' or "
+            "Indicador eq 'PIB Total' or Indicador eq 'Câmbio' or "
+            "Indicador eq 'IGP-M'"
+        ),
+        "%24orderby": "Data desc",
+    }
+
+    # Constroi a URL manualmente para maior controle
+    param_parts = "&".join(f"{k}={quote(str(v))}" for k, v in params.items())
+    url = f"{FOCUS_API_URL}?{param_parts}"
+
+    try:
+        req = urllib.request.Request(url, headers={"Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            data = json.loads(resp.read().decode())
+            values = data.get("value", [])
+    except Exception as e:
+        print(f"  [!] Focus API: {str(e)[:80]}", file=sys.stderr)
+        print("  [i] As series SGS foram coletadas com sucesso!", file=sys.stderr)
+        return {}
+
+    if not values:
+        print("  [-] Focus: nenhum registro encontrado", file=sys.stderr)
+        return {}
+
+    # Agrupa por Indicador + DataReferencia (ano)
+    # Pega a ultima mediana de cada ano (a mais recente)
+    grupos = defaultdict(dict)
+    for v in values:
+        ind = v.get("Indicador", "")
+        ref = v.get("DataReferencia", "")
+        med = v.get("Mediana")
+        if not ind or not ref or med is None:
+            continue
+        # So nos interessa 2025-2030
+        try:
+            ano = int(ref)
+            if ano < 2025 or ano > 2030:
+                continue
+        except ValueError:
+            continue
+        # Sobrescreve com o valor mais recente (ordenado por Data desc)
+        if ano not in grupos[ind]:
+            grupos[ind][ano] = med
 
     results = {}
+    for ind in INDICADORES_FOCUS:
+        if ind in grupos and grupos[ind]:
+            anos = sorted(grupos[ind].keys())
+            dados = {a: grupos[ind][a] for a in anos}
+            results[ind] = dados
+            print(f"  [+] Focus {ind}: {dados}", file=sys.stderr)
+        else:
+            print(f"  [-] Focus {ind}: sem dados", file=sys.stderr)
 
-    for indicador in INDICADORES_FOCUS:
-        params = {
-            "$format": "json",
-            "$filter": f"Indicador eq '{indicador}' and ano ge 2026 and ano le 2028",
-            "$select": "Indicador,ano,Mediana,DataReferencia",
-            "$orderby": "ano asc",
-            "$top": 5,
-        }
-        url = FOCUS_API_URL + "?" + urlencode(params)
-
-        try:
-            req = urllib.request.Request(url, headers={"Accept": "application/json"})
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                data = json.loads(resp.read().decode())
-                values = data.get("value", [])
-
-                if values:
-                    # Agrupa por ano (pega a mediana mais recente de cada ano)
-                    por_ano = {}
-                    for v in values:
-                        ano = v.get("ano")
-                        med = v.get("Mediana")
-                        if ano and med is not None:
-                            por_ano[ano] = med
-                    if por_ano:
-                        results[indicador] = por_ano
-                        print(f"  [+] Focus {indicador}: {por_ano}", file=sys.stderr)
-                    else:
-                        print(f"  [-] Focus {indicador}: dados vazios", file=sys.stderr)
-                else:
-                    print(f"  [-] Focus {indicador}: sem registros", file=sys.stderr)
-
-        except urllib.error.HTTPError as e:
-            if e.code == 504 or e.code == 503:
-                # Servidor indisponivel - comportamento esperado
-                pass
-            else:
-                print(f"  [!] Focus {indicador}: HTTP {e.code}", file=sys.stderr)
-        except Exception as e:
-            print(f"  [!] Focus {indicador}: {str(e)[:80]}", file=sys.stderr)
-
-    # Feedback amigavel
     if not results:
-        print("  [i] Focus API do BCB temporariamente indisponivel (504)", file=sys.stderr)
-        print("  [i] As series SGS foram coletadas com sucesso!", file=sys.stderr)
+        print("  [i] Nenhum dado Focus disponivel no momento", file=sys.stderr)
 
     return results
 
@@ -163,9 +180,19 @@ def format_focus_table(focus_data):
     lines.append("| Indicador | " + " | ".join(f"**{a}**" for a in anos) + " |")
     lines.append("|" + "|".join(":---:" for _ in range(len(anos) + 1)) + "|")
 
+    # Mostra Cambio como Dolar no relatorio
+    display_names = {
+        "IPCA": "IPCA",
+        "Selic": "Selic",
+        "PIB Total": "PIB Total",
+        "Câmbio": "Dólar",
+        "IGP-M": "IGP-M",
+    }
+
     for ind in INDICADORES_FOCUS:
         if ind not in focus_data:
             continue
+        nome = display_names.get(ind, ind)
         dados = focus_data[ind]
         vals = []
         for a in anos:
@@ -173,7 +200,7 @@ def format_focus_table(focus_data):
                 vals.append(f"{dados[a]:.2f}")
             else:
                 vals.append("-")
-        lines.append(f"| {ind} | " + " | ".join(vals) + " |")
+        lines.append(f"| {nome} | " + " | ".join(vals) + " |")
 
     return "\n".join(lines)
 

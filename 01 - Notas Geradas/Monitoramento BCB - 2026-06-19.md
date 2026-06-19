@@ -11,7 +11,7 @@ status: gerado_automaticamente
 
 # Monitoramento BCB - 19/06/2026
 
-> Gerado automaticamente via **python-bcb** | 19:28
+> Gerado automaticamente via **python-bcb** | 19:36
 
 ## Classificacao do Cenário
 
@@ -48,8 +48,13 @@ status: gerado_automaticamente
 
 > Boletim Focus - Mediana das expectativas de mercado
 
-*Dados Focus indisponiveis no momento. Tente novamente mais tarde.*
-
+| Indicador | **2026** | **2027** | **2028** | **2029** | **2030** |
+|:---:|:---:|:---:|:---:|:---:|:---:|
+| IPCA | 5.30 | 4.10 | 3.68 | 3.50 | 3.50 |
+| Selic | 13.75 | 12.00 | 10.25 | 10.00 | 10.00 |
+| PIB Total | 1.96 | 1.70 | 2.00 | 2.00 | 2.00 |
+| Dólar | 5.20 | 5.25 | 5.30 | 5.40 | 5.40 |
+| IGP-M | 6.22 | 4.04 | 3.82 | 3.77 | 3.70 |
 
 ## Reunioes do Copom
 
@@ -62,4 +67,4 @@ status: gerado_automaticamente
 | 18/06/26 | 14.25% | 🟢 -0.25 |
 
 ---
-*Gerado em 19/06/2026 as 19:28 via python-bcb (SGS + API BCB)*
+*Gerado em 19/06/2026 as 19:36 via python-bcb (SGS + API BCB)*
