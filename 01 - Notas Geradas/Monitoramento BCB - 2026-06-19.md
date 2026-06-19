@@ -11,7 +11,14 @@ status: gerado_automaticamente
 
 # Monitoramento BCB - 19/06/2026
 
-> Gerado automaticamente via **python-bcb** | 19:36
+> Gerado automaticamente via **python-bcb** | 19:46
+
+## Alertas
+
+- 🔴 IPCA 12m em 4.72%: ACIMA DO TETO (4,50%)
+- 🟢 3 cortes consecutivos da Selic (15,00% -> 14,25%) — ciclo de afrouxamento
+- 🔴 Divida Bruta em 80.19% do PIB — alerta fiscal ativo
+
 
 ## Classificacao do Cenário
 
@@ -67,4 +74,4 @@ status: gerado_automaticamente
 | 18/06/26 | 14.25% | 🟢 -0.25 |
 
 ---
-*Gerado em 19/06/2026 as 19:36 via python-bcb (SGS + API BCB)*
+*Gerado em 19/06/2026 as 19:46 via python-bcb (SGS + API BCB)*
