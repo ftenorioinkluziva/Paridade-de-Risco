@@ -533,7 +533,209 @@ def format_alertas(alertas):
 
 
 # ============================================================
-# 6. Geracao do Relatorio Markdown
+# 7. Portfolio Synthesis
+# ============================================================
+
+def gerar_sintese_carteira(sgs_data, focus_data):
+    """Gera sintese ligando dados macro a carteira de paridade de risco."""
+    linhas = []
+
+    # Coleta dados
+    cenario_str = classificar_cenario(sgs_data)
+    cenario = "C2"  # default
+    if "C1" in cenario_str:
+        cenario = "C1"
+    elif "C3" in cenario_str:
+        cenario = "C3"
+    elif "C4" in cenario_str:
+        cenario = "C4"
+
+    selic_df = sgs_data.get("Selic meta (% a.a.)")
+    selic = selic_df.iloc[-1, 0] if selic_df is not None and not selic_df.empty else 0
+
+    ipca_12m_df = sgs_data.get("IPCA 12 meses (%)")
+    ipca_12m = ipca_12m_df.iloc[-1, 0] if ipca_12m_df is not None and not ipca_12m_df.empty else 0
+
+    ibc_df = sgs_data.get("IBC-Br (atividade)")
+    ibc_trend = "crescendo" if ibc_df is not None and len(ibc_df) >= 3 and ibc_df.iloc[-1, 0] > ibc_df.iloc[-3, 0] else "estavel"
+
+    igp_df = sgs_data.get("IGP-M mensal (%)")
+    igp = igp_df.iloc[-1, 0] if igp_df is not None and not igp_df.empty else 0
+
+    dolar_df = sgs_data.get("Dolar Ptax (R$)")
+    dolar = dolar_df.iloc[-1, 0] if dolar_df is not None and not dolar_df.empty else 0
+
+    ipca_m_df = sgs_data.get("IPCA mensal (%)")
+    ipca_m = ipca_m_df.iloc[-1, 0] if ipca_m_df is not None and not ipca_m_df.empty else 0
+
+    # Focus data
+    selic_focus_26 = None
+    selic_focus_27 = None
+    ipca_focus_26 = None
+    if focus_data:
+        selic_focus_26 = focus_data.get("Selic", {}).get(2026)
+        selic_focus_27 = focus_data.get("Selic", {}).get(2027)
+        ipca_focus_26 = focus_data.get("IPCA", {}).get(2026)
+
+    # ========== ANALISE POR ATIVO ==========
+
+    linhas.append("### Impacto nos Ativos")
+    linhas.append("")
+
+    # CDI
+    if selic_focus_26:
+        linhas.append(
+            f"- **CDI** ({chr(0x1F7E2)} Alocado {chr(0x2192)} Selic atual "
+            f"{selic:.2f}%, Focus fim-2026: {selic_focus_26:.2f}%. "
+            f"Entregando ~{selic_focus_26:.1f}% a.a. no ano. "
+            f"{'Âncora de liquidez funcionando. ' if selic_focus_26 > 13 else ''}"
+            f"{'Nao ha necessidade de mexer.' if selic_focus_26 >= 12 else ''}"
+        )
+
+    # IFRM11 (C4 - prefixado curto)
+    if selic_focus_26 and selic_focus_27:
+        if selic > selic_focus_26:
+            linhas.append(
+                f"- **IFRM11** ({chr(0x1F7E2)} Alocado {chr(0x2192)} "
+                f"Selic caindo ({selic:.2f}% -> {selic_focus_26:.2f}%). "
+                f"Direction favoravel para prefixado curto. Duration ~1 ano. "
+                f"Mantido."
+            )
+        else:
+            linhas.append(
+                f"- **IFRM11** ({chr(0x1F7E1)} Alocado {chr(0x2192)} "
+                f"Selic subindo. Pressao curta no prefixado. Duration ~1 ano "
+                f"amortece impacto. Monitorar."
+            )
+
+    # XFIX11 + BOVA11 + IB5M11 (C1)
+    if cenario == "C2":
+        if igp and igp > 1.0:
+            linhas.append(
+                f"- **XFIX11 / BOVA11 / IB5M11** ({chr(0x1F7E1)} Cen {chr(0x2192)} "
+                f"Juros ainda altos ({selic:.2f}%) comprimem valuation. "
+                f"IGP-M alto ({igp:.2f}%) adia desinflacao. "
+                f"Mantido nos pesos (25% do capital = 33% do risco), "
+                f"mas aguardar sinais de C1 para considerar tilt."
+            )
+        else:
+            linhas.append(
+                f"- **XFIX11 / BOVA11 / IB5M11** ({chr(0x1F7E1)} Cen {chr(0x2192)} "
+                f"Juros altos ({selic:.2f}%) ainda comprimem. FIIs resilientes "
+                f"(atividade 1,9%). Mantido."
+            )
+
+    # B5P211 (C2+C3 - protecao inflacao)
+    if ipca_12m > 4.5:
+        linhas.append(
+            f"- **B5P211** ({chr(0x1F7E2)} Alocado {chr(0x2192)} "
+            f"IPCA 12m em {ipca_12m:.2f}% (acima do teto). "
+            f"Protecao contra inflacao funcionando. Duration curta = seguranca. "
+            f"Mantido."
+        )
+
+    # Dolar (C3)
+    dolar_focus = focus_data.get("Cambio", {}).get(2026) if focus_data else None
+    if dolar_focus:
+        if dolar < dolar_focus * 0.95:
+            linhas.append(
+                f"- **Dolar** ({chr(0x1F7E2)} Alocado {chr(0x2192)} "
+                f"Spot R$ {dolar:.2f} vs Focus R$ {dolar_focus:.2f}. "
+                f"Dolar abaixo do esperado. Hedge preventivo valido. "
+                f"Mantido."
+            )
+        else:
+            linhas.append(
+                f"- **Dolar** ({chr(0x1F7E1)} Alocado {chr(0x2192)} "
+                f"Spot R$ {dolar:.2f}. Hedge cambial. Mantido."
+            )
+
+    # ========== ACAO RECOMENDADA ==========
+    linhas.append("")
+    linhas.append("### Acao Recomendada")
+    linhas.append("")
+
+    if cenario == "C2":
+        # Verifica sinais de transicao para C1
+        sinais_c1 = 0
+        if ipca_m_df is not None and len(ipca_m_df) >= 4:
+            m1, m4 = ipca_m_df.iloc[-1, 0], ipca_m_df.iloc[-4, 0]
+            if m1 < m4:
+                sinais_c1 += 1
+        if selic_focus_26 and selic > selic_focus_26:
+            sinais_c1 += 1
+
+        if sinais_c1 >= 2:
+            linhas.append(
+                f"{chr(0x1F7E2)} **SINAIS DE C1 DETECTADOS** "
+                f"(IPCA desacelerando + Selic caindo). "
+                f"Manter pesos atuais. Se IPCA continuar caindo no proximo "
+                f"Focus, iniciar tilt suave para C1."
+            )
+            linhas.append("")
+            linhas.append(
+                f"{chr(0x1F4CB)} **Rebalanceamento:** Nenhum necessario agora. "
+                f"Aguardar proximo Focus (segunda) para reavaliar."
+            )
+        else:
+            linhas.append(
+                f"{chr(0x1F7E1)} **MANTER** Carteira equilibrada. "
+                f"Cenario C2 ainda vigente. Nenhuma acao urgente de "
+                f"rebalanceamento."
+            )
+            linhas.append("")
+            linhas.append(
+                f"{chr(0x1F4CB)} **Rebalanceamento:** Apenas ajustes finos "
+                f"se algum ativo estiver muito distante do peso-alvo "
+                f"(> 2% de desvio)."
+            )
+
+    elif cenario == "C1":
+        linhas.append(
+            f"{chr(0x1F7E2)} **OTIMIZAR** Cenairo C1 configurado. "
+            f"Avaliar aumento de exposicao a C1 (XFIX11, IB5M11, BOVA11) "
+            f"conforme simulacao Opcao 1."
+        )
+
+    elif cenario == "C3":
+        linhas.append(
+            f"{chr(0x1F534)} **ATENCAO** Cenario C3 (estagflacao). "
+            f"Verificar protecao cambial. Evitar aumentar C1."
+        )
+
+    # ========== PROXIMOS EVENTOS ==========
+    linhas.append("")
+    linhas.append("### Proximos Eventos no Radar")
+    linhas.append("")
+
+    from datetime import date, timedelta
+    hoje = date.today()
+    dias_semana = ["segunda", "terca", "quarta", "quinta", "sexta", "sabado", "domingo"]
+    dia_semana = dias_semana[hoje.weekday()]
+
+    # Calcula proxima segunda
+    dias_ate_seg = (7 - hoje.weekday()) % 7
+    if dias_ate_seg == 0:
+        dias_ate_seg = 7
+    prox_seg = hoje + timedelta(days=dias_ate_seg)
+
+    linhas.append(
+        f"- {chr(0x1F4C5)} **Proximo Focus:** {prox_seg.strftime('%d/%m')} "
+        f"(segunda-feira) as 08:30 BRT"
+    )
+
+    # Calcula proxima terca (um dia depois da segunda)
+    prox_ter = prox_seg + timedelta(days=1)
+    linhas.append(
+        f"- {chr(0x1F4C5)} **Proxima Ata Copom:** {prox_ter.strftime('%d/%m')} "
+        f"(se houver reuniao)"
+    )
+
+    return linhas
+
+
+# ============================================================
+# 8. Geracao do Relatorio Markdown
 # ============================================================
 
 def gerar_relatorio(sgs_data, focus_data):
@@ -643,6 +845,14 @@ def gerar_relatorio(sgs_data, focus_data):
         lines.append("### Indicadores Calculados")
         lines.append("")
         lines.extend(linhas_calc)
+        lines.append("")
+
+    # --- Portfolio Synthesis ---
+    linhas_sintese = gerar_sintese_carteira(sgs_data, focus_data)
+    if linhas_sintese:
+        lines.append("## SINTESE PARA A CARTEIRA")
+        lines.append("")
+        lines.extend(linhas_sintese)
         lines.append("")
 
     # --- Focus ---
