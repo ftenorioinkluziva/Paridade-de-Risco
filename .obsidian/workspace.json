@@ -208,6 +208,14 @@
   },
   "active": "c4bfcc3ebe164729",
   "lastOpenFiles": [
+    "scripts/simulacao_rebalanceamento.py",
+    "scripts/simulacao_longa.py",
+    "scripts/simulacao_carteira.py",
+    "01 - Notas Geradas/Simulacao Rebalanceamento - 2026-06-22.md",
+    "01 - Notas Geradas/Simulacao Longa 2021-2026 - 2026-06-22.md",
+    "01 - Notas Geradas/Simulacao 2026 - 2026-06-22.md",
+    "01 - Notas Geradas/Monitoramento BCB - 2026-06-22.md",
+    "01 - Notas Geradas/Benchmark Carteira - 2026-06-22.md",
     "01 - Notas Geradas/Dashboard BCB - 2026-06-19.md",
     "01 - Notas Geradas/Acompanhamento Junho 2026.md",
     "01 - Notas Geradas/Táticas de Aporte e Distribuição.md",
@@ -228,8 +236,6 @@
     "99 - PDFs/Montando uma Carteira de Paridade de Risco no Brasil.pdf",
     "99 - PDFs/M1 - Aula 3 - As 3 fontes de Retorno.mp3.pdf",
     "99 - PDFs/M1 - Aula 1 - Aula 2 - As 8 Classes de Ativos_audio.pdf",
-    "99 - PDFs/Fundamentos da Alocação por Paridade de Risco.pdf",
-    "99 - PDFs/Cálculo de Pesos para Carteira Paridade de Risco Brasil.pdf",
     "04 - Fontes/Política Monetária no Brasil_ Conceitos e Mecanismos.md",
     "04 - Fontes/Paridade de Risco_ Superando a Pressão Psicológica do Mercado.md",
     "04 - Fontes/Montando uma Carteira de Paridade de Risco no Brasil.md",
@@ -239,11 +245,6 @@
     "04 - Fontes/Fundamentos da Alocação por Paridade de Risco.md",
     "04 - Fontes/Desafios Emocionais do Investimento em Paridade de Risco.md",
     "04 - Fontes/Cálculo de Pesos para Carteira Paridade de Risco Brasil.md",
-    "04 - Fontes/Construindo a Carteira de Paridade de Risco no Brasil.md",
-    "04 - Fontes/Como Montar sua Carteira de Investimentos no Brasil com ETFs.md",
-    "04 - Fontes/Como Ativos Brasileiros Performam em Diferentes Cenários Econômicos.md",
-    "04 - Fontes/Carteira de Paridade de Risco no Brasil_ Análise Detalhada.md",
-    "04 - Fontes/Aula 8 - Resumo da Política Monetária (definição de juros) no Brasil.md",
-    "04 - Fontes/Aula 7 - 4º Diferença entre Economia EUA x Brasil (Sincronismo de Políticas)_audio.mp3.md"
+    "04 - Fontes/Construindo a Carteira de Paridade de Risco no Brasil.md"
   ]
 }
