@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "01 - Notas Geradas/Táticas de Aporte e Distribuição.md",
+                "file": "01 - Notas Geradas/Monitoramento BCB - 2026-06-19.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Táticas de Aporte e Distribuição"
+              "title": "Monitoramento BCB - 2026-06-19"
             }
           }
         ]
@@ -208,8 +208,14 @@
   },
   "active": "c4bfcc3ebe164729",
   "lastOpenFiles": [
+    "01 - Notas Geradas/Dashboard BCB - 2026-06-19.md",
     "01 - Notas Geradas/Acompanhamento Junho 2026.md",
     "01 - Notas Geradas/Táticas de Aporte e Distribuição.md",
+    "99 - Anexos/graficos/graf_selic_ipca.png",
+    "99 - Anexos/Templates/Diário de Bordo - Template.md",
+    "99 - Anexos/graficos/graf_estrutura_carteira.png",
+    "01 - Notas Geradas/Simulação - Tilt Opção 2 - Intra-C1 - Junho 2026.md",
+    "01 - Notas Geradas/Simulação - Tilt Opção 1 - Junho 2026.md",
     "01 - Notas Geradas/Rebalanceamento Maio 2026.md",
     "99 - PDFs/Focus_12062026.pdf",
     "02 - Conhecimentos/Carteira risco equilibrado no mercado brasileiro.md",
@@ -238,11 +244,6 @@
     "04 - Fontes/Como Ativos Brasileiros Performam em Diferentes Cenários Econômicos.md",
     "04 - Fontes/Carteira de Paridade de Risco no Brasil_ Análise Detalhada.md",
     "04 - Fontes/Aula 8 - Resumo da Política Monetária (definição de juros) no Brasil.md",
-    "04 - Fontes/Aula 7 - 4º Diferença entre Economia EUA x Brasil (Sincronismo de Políticas)_audio.mp3.md",
-    "04 - Fontes/Aula 6 - 3º Diferença entre Economia Eua x Brasil (Fiscal e Juros Longos) Parte 2_audio.mp3.md",
-    "04 - Fontes/Aula 5 - 3º Diferença entre Economia EUA x Brasil (Fiscal e Juros Longos) Parte 1_audio.mp3.md",
-    "04 - Fontes/Aula 4 - 2º Diferença entre Economia EUA x Brasil (Função Reação) Parte 2_audio.mp3.md",
-    "04 - Fontes/Aula 3 - Por que Ações vão bem no Cenário 1 no Brasil.md",
-    "04 - Fontes/Aula 3 - 2º Diferença entre Economia EUA x Brasil (Mandato BCB) Parte 1_audio.mp3.md"
+    "04 - Fontes/Aula 7 - 4º Diferença entre Economia EUA x Brasil (Sincronismo de Políticas)_audio.mp3.md"
   ]
 }
